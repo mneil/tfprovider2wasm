@@ -1,0 +1,17 @@
+diff --git a/helper/schema/resource.go b/helper/schema/resource.go
+index 28a7600..a3461bc 100644
+--- a/helper/schema/resource.go
++++ b/helper/schema/resource.go
+@@ -603,6 +603,12 @@ func (r *Resource) ShimInstanceStateFromValue(state cty.Value) (*terraform.Insta
+ 	return s, nil
+ }
+ 
++func NewResourceDataFromResource(r *Resource) *ResourceData {
++	return &ResourceData{
++		schema: r.Schema,
++	}
++}
++
+ // The following function types are of the legacy CRUD operations.
+ //
+ // Deprecated: Please use the context aware equivalents instead.

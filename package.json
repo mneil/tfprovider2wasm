@@ -1,0 +1,17 @@
+{
+  "name": "tfprovider2wasm",
+  "version": "1.0.0",
+  "description": "This project does not work like the terraform aws provider to actually manage resources. Instead it acts to mock the provider so that you can implement the API on it or inspect calls that are made.",
+  "main": "index.js",
+  "scripts": {
+    "build": "zx misc/scripts/build.zx.js",
+    "install": "zx misc/scripts/install.zx.js",
+    "serve": "http-server -p 8000"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "zx": "^7.2.2"
+  }
+}
