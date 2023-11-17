@@ -1,16 +1,11 @@
 go 1.20
 
 use (
-	./aws-sdk-go-mock
-	./go-cty
-	./terraform-plugin-sdk
-	./terraform-provider-aws
+	// ./aws-sdk-go-mock
 	./tfprovider2wasm
+
+	// ./terraform-provider-aws
 )
 
-replace github.com/zclconf/go-cty v1.13.1 => ./go-cty
-// replace github.com/hashicorp/terraform-plugin-sdk/v2 => ./terraform-plugin-sdk
-// replace github.com/terraform-providers/terraform-provider-aws => ./terraform-provider-aws
-// replace github.com/hashicorp/terraform-provider-aws => ./terraform-provider-aws
-// replace github.com/aws/aws-sdk-go => ./aws-sdk-go-mock
-// replace github.com/aws/aws-sdk-go-v2 => ./mod/aws/aws-sdk-go-v2
+replace github.com/aws/aws-sdk-go => ./aws-sdk-go-mock
+replace github.com/hashicorp/terraform-provider-aws => ./terraform-provider-aws

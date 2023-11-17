@@ -64,7 +64,7 @@ async function applyPatches(patchBaseDir, toPatch = "") {
 async function cloneTfProviderAws(ref) {
   // clone the terraform aws provider
   await $`rm -rf ./terraform-provider-aws`;
-  await git("./terraform-provider-aws", "hashicorp/terraform-provider-aws", ref, [
+  await git("./terraform-provider-aws", "terraform-providers/terraform-provider-aws", ref, [
     "internal/attrmap",
     "internal/conns",
     "internal/create",
@@ -131,10 +131,6 @@ async function cloneTfProviderAws(ref) {
   await $`cp -fr ./terraform-provider-aws/internal/service/ec2 ./terraform-provider-aws/ec2`
   await $`cp -fr ./terraform-provider-aws/internal/provider ./terraform-provider-aws/provider`
 
-  // await $`find ./terraform-provider-aws -type f -exec sed -i 's|github.com/hashicorp/terraform-provider-aws|github.com/mneil/tfprovider2wasm/mod/hashicorp/terraform-provider-aws|g' {} \\;`
-  // await $`find ./terraform-provider-aws -type f -exec sed -i 's|github.com/mneil/tfprovider2wasm/mod/hashicorp/terraform-provider-aws/internal/conns|github.com/mneil/tfprovider2wasm/mod/hashicorp/terraform-provider-aws/conns|g' {} \\;`
-  // await $`find ./terraform-provider-aws -type f -exec sed -i 's|github.com/mneil/tfprovider2wasm/mod/hashicorp/terraform-provider-aws/internal/provider|github.com/mneil/tfprovider2wasm/mod/hashicorp/terraform-provider-aws/provider|g' {} \\;`
-
 }
 /**
  * Clone the terraform plugin sdk so we can patch it
@@ -168,12 +164,12 @@ async function install() {
   const tfProviderAwsSha = "2d4cce82a8a6a0987f626eb20bf61acfa77e24a0";
   await Promise.all([
     cloneTfProviderAws(tfProviderAwsSha),
-    cloneTfPluginSdk("v2.26.1"),
-    cloneAwsSdkV1("sdkv1"),
-    cloneGoogleCty("7152062cc7333dcdfeed910e7c7f9690276bc2eb"), // v1.14.1
+    // cloneTfPluginSdk("v2.26.1"),
+    // cloneAwsSdkV1("sdkv1"),
+    // cloneGoogleCty("7152062cc7333dcdfeed910e7c7f9690276bc2eb"), // v1.14.1
     // cloneAwsSdkV2("4599f78694cabb6853addabc6f92cb197fdb5647")
   ]);
-  await applyPatches(path.resolve(__dirname, "..", "..", ".patches"));
+  // await applyPatches(path.resolve(__dirname, "..", "..", ".patches"));
 
   // await finalizeClone()
   // await $`go mod tidy`
