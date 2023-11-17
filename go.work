@@ -4,8 +4,10 @@ use (
 	// ./aws-sdk-go-mock
 	./tfprovider2wasm
 
-	// ./terraform-provider-aws
+	./terraform-provider-aws
+	./terraform-plugin-sdk
 )
 
 replace github.com/aws/aws-sdk-go => ./aws-sdk-go-mock
-replace github.com/hashicorp/terraform-provider-aws => ./terraform-provider-aws
+// replace github.com/hashicorp/terraform-provider-aws => ./terraform-provider-aws
+// replace github.com/hashicorp/terraform-plugin-sdk => ./terraform-plugin-sdk

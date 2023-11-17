@@ -140,7 +140,7 @@ async function cloneTfPluginSdk(ref) {
   // aws helper functions for the go-sdk
   await $`rm -rf ./terraform-plugin-sdk`;
   await git("./terraform-plugin-sdk", "hashicorp/terraform-plugin-sdk", ref);
-  await $`find ./terraform-plugin-sdk -type f -exec sed -i 's|github.com/hashicorp/go-cty/cty|github.com/zclconf/go-cty|g' {} \\;`
+  // await $`find ./terraform-plugin-sdk -type f -exec sed -i 's|github.com/hashicorp/go-cty/cty|github.com/zclconf/go-cty|g' {} \\;`
   // within(async () => {
   //   cd("./terraform-plugin-sdk")
   //   await $`go get github.com/zclconf/go-cty@v1.14.1`
@@ -164,12 +164,12 @@ async function install() {
   const tfProviderAwsSha = "2d4cce82a8a6a0987f626eb20bf61acfa77e24a0";
   await Promise.all([
     cloneTfProviderAws(tfProviderAwsSha),
-    // cloneTfPluginSdk("v2.26.1"),
+    cloneTfPluginSdk("v2.26.1"),
     // cloneAwsSdkV1("sdkv1"),
     // cloneGoogleCty("7152062cc7333dcdfeed910e7c7f9690276bc2eb"), // v1.14.1
     // cloneAwsSdkV2("4599f78694cabb6853addabc6f92cb197fdb5647")
   ]);
-  // await applyPatches(path.resolve(__dirname, "..", "..", ".patches"));
+  await applyPatches(path.resolve(__dirname, "..", "..", ".patches"));
 
   // await finalizeClone()
   // await $`go mod tidy`
