@@ -170,7 +170,7 @@ async function install() {
     cloneTfProviderAws(tfProviderAwsSha),
     cloneTfPluginSdk("v2.26.1"),
     cloneAwsSdkV1("sdkv1"),
-    cloneGoogleCty("v1.14.1"),
+    cloneGoogleCty("7152062cc7333dcdfeed910e7c7f9690276bc2eb"), // v1.14.1
     // cloneAwsSdkV2("4599f78694cabb6853addabc6f92cb197fdb5647")
   ]);
   await applyPatches(path.resolve(__dirname, "..", "..", ".patches"));
