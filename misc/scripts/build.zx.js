@@ -1,5 +1,6 @@
 async function build() {
   // compile
+  await $`rm -rf dist`
   await $`mkdir -p dist`
   await within(async () => {
     cd("./tfprovider2wasm")

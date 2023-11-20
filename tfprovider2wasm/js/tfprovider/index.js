@@ -18,7 +18,7 @@ export async function client(service) {
   if(!services.includes(service)) {
     throw new Error(`Invalid service name: ${service}`)
   }
-  const result = await WebAssembly.instantiateStreaming(fetch(`dist/${service}.wasm`), provider.importObject)
+  const result = await WebAssembly.instantiateStreaming(fetch(`tfprovider/${service}.wasm`), provider.importObject)
   provider.run(result.instance)
   cached[service] = TerraformAwsProvider[service];
   // TerraformAwsProvider.client[service] = new awsEc2.EC2Client({
