@@ -1,6 +1,7 @@
 node_modules
+dist
 terraform-plugin-sdk
 terraform-provider-aws
 aws-sdk-go-mock
-go-cty
+tfprovider2wasm/js/wasm_exec.js
 !.patches/*

@@ -168,6 +168,36 @@ async function cloneAwsSdkV1(ref) {
   await git("./aws-sdk-go-mock", "mneil/aws-sdk-go-mock", ref);
 }
 
+async function patchWasmExec() {
+  const goroot = await $`go env GOROOT`;
+  const wasmExec = path.join(goroot.stdout.replace("\n", ""), "misc", "wasm", "wasm_exec.js");
+  if (!wasmExec.endsWith("wasm_exec.js")) {
+    throw new Error(
+      "You must pass the absolute path to wasm_exec as the last argument to this script.\nnode ./scripts/wasm-exec.js $(go env GOROOT)/misc/wasm/wasm_exec.js"
+    );
+  }
+
+  async function copyWasmExec(wasmExec) {
+    const providerName = "TerraformAwsProvider";
+    let contents = await fs.promises.readFile(wasmExec, "utf-8");
+    contents = contents.replace("(() => {", `export function ${providerName} () {`);
+    const endOfFile = `
+  globalThis.process.env = {...globalThis.process.env, AWS_PROFILE: "default"};
+  return new Go();
+}
+globalThis.${providerName} = ${providerName};`;
+    contents = contents.replace("})();", endOfFile);
+
+    contents += `
+${providerName}.client = {};
+${providerName}.ec2 = {};
+`;
+    await fs.promises.writeFile(path.resolve(__dirname, "..", "..", "tfprovider2wasm", "js", "tfprovider", "wasm_exec.js"), contents);
+  }
+
+  copyWasmExec(wasmExec).then(console.log("done"));
+}
+
 async function finalizeClone() {
   // TODO: this isn't working. zx sanitizing it?
   await $`rm -rf mod/**/*_test.go`;
@@ -191,7 +221,7 @@ async function install() {
   ]);
   await finalizeClone()
   // await $`go mod tidy`
-  // await patchWasmExec();
+  await patchWasmExec();
   // TODO: replace this
   // await copyBasicFiles();
   // await $`npm run build`;
