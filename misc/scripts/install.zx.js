@@ -126,10 +126,16 @@ async function cloneTfProviderAws(ref) {
   await $`cp -fr ./misc/awsclient_gen.go ./terraform-provider-aws/internal/conns/awsclient_gen.go`
   await $`cp -fr ./misc/service_packages_gen.go ./terraform-provider-aws/internal/provider/service_packages_gen.go`
   await $`cp -fr ./misc/service_package_gen.go ./terraform-provider-aws/internal/service/ec2/service_package_gen.go`
+  await $`cp -fr ./misc/provider.go ./terraform-provider-aws/provider/provider.go`
 
-  await $`mv -fr ./terraform-provider-aws/internal/conns ./terraform-provider-aws/conns`
-  await $`mv -fr ./terraform-provider-aws/internal/service/ec2 ./terraform-provider-aws/ec2`
-  await $`mv -fr ./terraform-provider-aws/internal/provider ./terraform-provider-aws/provider`
+  await $`mv -f ./terraform-provider-aws/internal/conns ./terraform-provider-aws/conns`
+  await $`mv -f ./terraform-provider-aws/internal/service/ec2 ./terraform-provider-aws/ec2`
+  await $`mv -f ./terraform-provider-aws/internal/provider ./terraform-provider-aws/provider`
+
+  await $`find ./terraform-provider-aws -type f -exec sed -i 's|github.com/hashicorp/terraform-provider-aws/internal/conns|github.com/hashicorp/terraform-provider-aws/conns|g' {} \\;`
+  await $`find ./terraform-provider-aws -type f -exec sed -i 's|github.com/hashicorp/terraform-provider-aws/internal/provider|github.com/hashicorp/terraform-provider-aws/provider|g' {} \\;`
+
+
 
 }
 /**
@@ -175,20 +181,22 @@ async function install() {
   const tfProviderAwsSha = "2d4cce82a8a6a0987f626eb20bf61acfa77e24a0";
   await Promise.all([
     cloneTfProviderAws(tfProviderAwsSha),
-    cloneTfPluginSdk("v2.26.1"),
+    // cloneTfPluginSdk("v2.26.1"),
     // cloneAwsSdkV1("sdkv1"),
+
+
     // cloneGoogleCty("7152062cc7333dcdfeed910e7c7f9690276bc2eb"), // v1.14.1
     // cloneAwsSdkV2("4599f78694cabb6853addabc6f92cb197fdb5647")
   ]);
 
 
-  await finalizeClone()
-  // await $`go mod tidy`
+  // await finalizeClone()
 
+
+  // await $`go mod tidy`
   // await patchWasmExec();
   // TODO: replace this
   // await copyBasicFiles();
-
   // await $`npm run build`;
 }
 
