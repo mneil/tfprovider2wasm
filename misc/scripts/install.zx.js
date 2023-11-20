@@ -123,19 +123,19 @@ async function cloneTfProviderAws(ref) {
   await $`rm -rf ./terraform-provider-aws/ec2`
   await $`rm -rf ./terraform-provider-aws/provider`
 
-  await $`cp -fr ./misc/awsclient_gen.go ./terraform-provider-aws/internal/conns/awsclient_gen.go`
-  await $`cp -fr ./misc/service_packages_gen.go ./terraform-provider-aws/internal/provider/service_packages_gen.go`
-  await $`cp -fr ./misc/service_package_gen.go ./terraform-provider-aws/internal/service/ec2/service_package_gen.go`
-  await $`cp -fr ./misc/provider.go ./terraform-provider-aws/provider/provider.go`
 
   await $`mv -f ./terraform-provider-aws/internal/conns ./terraform-provider-aws/conns`
   await $`mv -f ./terraform-provider-aws/internal/service/ec2 ./terraform-provider-aws/ec2`
   await $`mv -f ./terraform-provider-aws/internal/provider ./terraform-provider-aws/provider`
 
+  await $`cp -fr ./misc/awsclient_gen.go ./terraform-provider-aws/conns/awsclient_gen.go`
+  await $`cp -fr ./misc/service_packages_gen.go ./terraform-provider-aws/provider/service_packages_gen.go`
+  await $`cp -fr ./misc/service_package_gen.go ./terraform-provider-aws/ec2/service_package_gen.go`
+  await $`cp -fr ./misc/provider.go ./terraform-provider-aws/provider/provider.go`
+
   await $`find ./terraform-provider-aws -type f -exec sed -i 's|github.com/hashicorp/terraform-provider-aws/internal/conns|github.com/hashicorp/terraform-provider-aws/conns|g' {} \\;`
   await $`find ./terraform-provider-aws -type f -exec sed -i 's|github.com/hashicorp/terraform-provider-aws/internal/provider|github.com/hashicorp/terraform-provider-aws/provider|g' {} \\;`
-
-
+  await $`find ./terraform-provider-aws -type f -exec sed -i 's|resourceInstanceCreate|ResourceInstanceCreate|g' {} \\;`
 
 }
 /**
