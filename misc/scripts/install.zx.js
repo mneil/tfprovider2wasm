@@ -27,7 +27,7 @@ async function git(dir, repo, ref, files = []) {
     await $`git pull -s theirs --depth 1 origin ${ref}`;
     if (files.length > 0) {
       // only leave .git folder if we cloned the entire repo
-      await $`rm -rf .git`;
+      // await $`rm -rf .git`;
     }
   });
 }
@@ -127,9 +127,9 @@ async function cloneTfProviderAws(ref) {
   await $`cp -fr ./misc/service_packages_gen.go ./terraform-provider-aws/internal/provider/service_packages_gen.go`
   await $`cp -fr ./misc/service_package_gen.go ./terraform-provider-aws/internal/service/ec2/service_package_gen.go`
 
-  await $`cp -fr ./terraform-provider-aws/internal/conns ./terraform-provider-aws/conns`
-  await $`cp -fr ./terraform-provider-aws/internal/service/ec2 ./terraform-provider-aws/ec2`
-  await $`cp -fr ./terraform-provider-aws/internal/provider ./terraform-provider-aws/provider`
+  await $`mv -fr ./terraform-provider-aws/internal/conns ./terraform-provider-aws/conns`
+  await $`mv -fr ./terraform-provider-aws/internal/service/ec2 ./terraform-provider-aws/ec2`
+  await $`mv -fr ./terraform-provider-aws/internal/provider ./terraform-provider-aws/provider`
 
 }
 /**
@@ -160,6 +160,17 @@ async function cloneAwsSdkV1(ref) {
   await $`rm -rf ./aws-sdk-go-mock`;
   await git("./aws-sdk-go-mock", "mneil/aws-sdk-go-mock", ref);
 }
+
+async function finalizeClone() {
+  // TODO: this isn't working. zx sanitizing it?
+  await $`rm -rf mod/**/*_test.go`;
+  // this has to happen before we rewrite imports
+  await applyPatches(path.resolve(__dirname, "..", "..", ".patches"));
+  // await $`mv .terraform-provider-aws/internal/service/** ./terraform-provider-aws/`
+  // rewrite imports and patched references / tokens
+  // await $`go run main.go -file mod`;
+}
+
 async function install() {
   const tfProviderAwsSha = "2d4cce82a8a6a0987f626eb20bf61acfa77e24a0";
   await Promise.all([
@@ -169,9 +180,9 @@ async function install() {
     // cloneGoogleCty("7152062cc7333dcdfeed910e7c7f9690276bc2eb"), // v1.14.1
     // cloneAwsSdkV2("4599f78694cabb6853addabc6f92cb197fdb5647")
   ]);
-  await applyPatches(path.resolve(__dirname, "..", "..", ".patches"));
 
-  // await finalizeClone()
+
+  await finalizeClone()
   // await $`go mod tidy`
 
   // await patchWasmExec();
