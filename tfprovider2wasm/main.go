@@ -42,17 +42,14 @@ func NewClient(ctx context.Context) *conns.AWSClient {
 	}
 
 	diags := schemaProvider.Configure(ctx, terraform.NewResourceConfigRaw(map[string]interface{}{
-		"region":                "us-east-1",
-		"aws_access_key_id":     "a",
-		"aws_secret_access_key": "b",
+		"region":                				"us-east-1",
+		"access_key": 									"a",
+		"secret_key": 									"b",
+		"skip_credentials_validation": 	true,
 	}))
 	if diags.HasError() {
-		fmt.Printf("Errors %+v\n", diags)
-		// panic("unable to configure provider")
+		fmt.Printf("Warn %+v\n", diags)
 	}
-	// data := &schema.ResourceData{}
-	// data.Set("access_key", "a")
-	// schemaProvider.ConfigureContextFunc(ctx, data)
 	client, ok := schemaProvider.Meta().(*conns.AWSClient)
 	if client.Session, err = session.NewSession(); err != nil {
 		panic(err)
@@ -61,16 +58,6 @@ func NewClient(ctx context.Context) *conns.AWSClient {
 		panic("unable to cast garbage tf meta interface to AWSClient because hashi doesn't understand interfaces or the adapter pattern")
 	}
 	return client
-	// client := &conns.AWSClient{
-	//      Partition: "aws",
-	//      Region:    "us-east-1",
-	//      // Service:   "ec2",
-	//      AccountID: "012345678910",
-	//      // Calls:     make([]*Call, 0),
-	//      Session: &session.Session{},
-	//      ServicePackages: ,
-	// }
-	// return client
 }
 
 func ResourceInstanceCreate() js.Func {
