@@ -8,6 +8,7 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws/request"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/go-faker/faker/v4/pkg/options"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-aws/conns"
@@ -23,6 +24,11 @@ func main() {
 	// js.FuncOf(Transform)
 	// TODO: How can we expose this without keeping it live the entire time?
 	// do we need to kill it or is this fine?
+	mock :=request.GetMock()
+	mock.FakeOptions(
+		options.WithRandomMapAndSliceMaxSize(3),
+		options.WithRandomMapAndSliceMinSize(1),
+	)
 	<-make(chan bool)
 }
 
@@ -35,7 +41,6 @@ func unmarshalMap(input string) (map[string]any, error) {
 	return raw, nil
 }
 func NewClient(ctx context.Context) *conns.AWSClient {
-	request.GetMock()
 	schemaProvider, err := provider.New(ctx)
 	if err != nil {
 		panic(err)
