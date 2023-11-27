@@ -6,7 +6,7 @@
   "scripts": {
     "build": "zx misc/scripts/build.zx.js",
     "install": "zx misc/scripts/install.zx.js",
-    "serve": "http-server -p 8000"
+    "serve": "http-server -p 8000 dist"
   },
   "author": "",
   "license": "ISC",
