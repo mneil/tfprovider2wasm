@@ -5,11 +5,23 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/aws/aws-sdk-go/aws/request"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/go-faker/faker/v4/pkg/options"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-aws/conns"
 	"github.com/hashicorp/terraform-provider-aws/provider"
 )
+
+// initialize the mock options automatically and always
+func init() {
+	mock :=request.GetMock()
+	mock.FakeOptions(
+		options.WithRandomMapAndSliceMaxSize(3),
+		options.WithRandomMapAndSliceMinSize(1),
+	)
+}
+
 
 func UnmarshalMap(input string) (map[string]any, error) {
 	var raw map[string]any

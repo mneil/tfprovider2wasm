@@ -16,14 +16,6 @@ func resourceInstanceCreate(args string) {
 		fmt.Printf("unable to convert to json %s\n", err)
 		return
 	}
-	// mock := request.GetMock()
-	// mock.On("*", "*").Do(func (r *request.Request) {
-	// 	fmt.Println("Call: ", r.ClientInfo.ServiceName, r.Operation.Name)
-	// 	fmt.Println("PARAMS", r.Params)
-	// 	fmt.Println("RESPONSE", r.Data)
-	// 	fmt.Println("")
-	// 	// call my jsfun with args
-	// })
 	ctx := context.Background()
 	rsrc := ec2.ResourceInstance()
 	data := schema.NewResourceDataFromResource(rsrc)
@@ -40,7 +32,4 @@ func resourceInstanceCreate(args string) {
 
 	mock := request.GetMock()
 	fmt.Println(mock.ExpectedCalls)
-	// mock.On("*", "*").Do(func (r *request.Request) {
-	// 	// call my jsfun with args
-	// })
 }
