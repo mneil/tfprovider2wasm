@@ -6,6 +6,7 @@ async function build() {
     cd("./tfprovider2wasm")
     await $`GOOS=js GOARCH=wasm go build -o ec2.wasm -v`
   })
+  await $`cp -f misc/favicon.ico dist`
   await $`cp -f tfprovider2wasm/js/index.html dist`
   await $`cp -f tfprovider2wasm/js/index.js dist`
   await $`cp -rf tfprovider2wasm/js/tfprovider dist/tfprovider`
